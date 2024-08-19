@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Produto;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
@@ -12,10 +13,14 @@ class ProdutoController extends Controller
      */
     public function index()
     {
-        $filtro = request()->input('filtro');
+        $user = Auth::user();
+        $userTipo = $user->tipoUsuario;
         $produtos = Produto::all();
 
-        return view('produto.index')->with('produtos', $produtos);
+        return view('produto.index', [
+            'produtos' => $produtos,
+            'userTipo' => $userTipo
+        ]);
     }
 
     /**

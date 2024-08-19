@@ -22,12 +22,14 @@
                 <td>{{ $produto->categoria }}</td>
                 <td>
                     <a href="{{ route('produto.show', $produto->id) }}">Ver</a>
-                    <a href="{{ route('produto.edit', $produto->id) }}">Editar</a>
-                    <form action="{{ route('produto.destroy', $produto->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este produto?')">Deletar</button>
-                    </form>
+                    @if(Auth::check() && Auth::user()->tipoUsuario != '66a78542e20f0207810d04aa')
+                        <a href="{{ route('produto.edit', $produto->id) }}">Editar</a>
+                        <form action="{{ route('produto.destroy', $produto->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este produto?')">Deletar</button>
+                        </form>
+                    @endif
                 </td>
             </tr>
             @endforeach

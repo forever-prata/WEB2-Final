@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProdutoController;
+use App\Http\Middleware\CheckAdmin;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +17,14 @@ use App\Http\Controllers\ProdutoController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('barra');
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::resource("/produto", ProdutoController::class);
+Route::resource("/produto", ProdutoController::class)->only([
+    'edit', 'store', 'update', 'destroy', 'create'
+])->middleware(CheckAdmin::class);
+Route::resource("/produto", ProdutoController::class)->only([
+    'index', 'show'
+]);
